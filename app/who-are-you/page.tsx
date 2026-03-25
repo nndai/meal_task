@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AppHeader } from "@/components/app-header";
 import { useHouseholdBoard } from "@/hooks/useHouseholdBoard";
@@ -23,7 +23,7 @@ function resolveReturnPath(raw: string | null): string {
   return raw;
 }
 
-export default function WhoAreYouPage() {
+function WhoAreYouContent() {
   const board = useHouseholdBoard();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -128,5 +128,25 @@ export default function WhoAreYouPage() {
         </section>
       </main>
     </div>
+  );
+}
+
+export default function WhoAreYouPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="relative min-h-screen overflow-x-hidden bg-[radial-gradient(circle_at_top,#ffe7cf_0%,#fff8f2_40%,#f7fafc_100%)] text-slate-900">
+          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#f2e8dd_1px,transparent_1px),linear-gradient(to_bottom,#f2e8dd_1px,transparent_1px)] bg-size-[44px_44px] opacity-40" />
+          <AppHeader />
+          <main className="relative z-10 mx-auto w-full max-w-5xl px-5 py-10">
+            <section className="mx-auto w-full max-w-lg overflow-hidden rounded-3xl border border-amber-100 bg-white p-7 shadow-2xl">
+              <p className="text-sm text-slate-600">Đang tải trang chọn thành viên...</p>
+            </section>
+          </main>
+        </div>
+      }
+    >
+      <WhoAreYouContent />
+    </Suspense>
   );
 }
