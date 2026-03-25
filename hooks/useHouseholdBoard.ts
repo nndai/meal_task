@@ -16,6 +16,8 @@ import {
   updateMemberInSupabase,
 } from "@/lib/supabase";
 
+const POLLING_INTERVAL_MS = 3000;
+
 function getInitials(name: string): string {
   const parts = name.trim().split(/\s+/).filter(Boolean);
   if (parts.length === 0) {
@@ -177,6 +179,50 @@ export function useHouseholdBoard() {
 
     hydrateBoard();
   }, [supabaseEnabled]);
+
+  useEffect(() => {
+    if (!supabaseEnabled || !hydrated) {
+      return;
+    }
+
+    let cancelled = false;
+    let inFlight = false;
+
+    async function pollBoard() {
+      if (cancelled || inFlight || !window.navigator.onLine) {
+        return;
+      }
+
+      inFlight = true;
+      try {
+        const remoteBoard = await fetchBoardStateFromSupabase();
+        if (cancelled) {
+          return;
+        }
+
+        const normalizedBoard = normalizeBoardState(remoteBoard);
+        setBoard(normalizedBoard);
+
+        if (currentMemberId !== null && !normalizedBoard.members.some((member) => member.id === currentMemberId)) {
+          window.localStorage.removeItem(USER_MEMBER_ID_KEY);
+          setCurrentMemberId(null);
+        }
+      } catch {
+        // Keep polling even when a single refresh fails.
+      } finally {
+        inFlight = false;
+      }
+    }
+
+    const intervalId = window.setInterval(() => {
+      void pollBoard();
+    }, POLLING_INTERVAL_MS);
+
+    return () => {
+      cancelled = true;
+      window.clearInterval(intervalId);
+    };
+  }, [currentMemberId, hydrated, supabaseEnabled]);
 
   const currentMember = useMemo(() => {
     if (currentMemberId === null) {

@@ -49,7 +49,7 @@ export default function HomePage() {
                 className="fixed inset-0 z-20"
                 onClick={() => setShowCalendar(false)}
               />
-              <div className="absolute inset-auto right-0 top-12 z-30 block">
+              <div className="fixed inset-45 z-30 flex items-start justify-center md:absolute md:inset-auto md:right-0 md:top-12 md:block">
                 <div className="rounded-xl border border-slate-200 bg-white p-2 shadow-xl">
                   <Calendar
                     mode="single"
@@ -71,7 +71,7 @@ export default function HomePage() {
     >
       {isPast && (
         <div className="mb-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-800">
-          Đây là ngày trong quá khứ — không thể thay đổi dữ liệu.
+          Đây là ngày trong quá khứ, không thay đổi dữ liệu
         </div>
       )}
       <div className="grid gap-5">
