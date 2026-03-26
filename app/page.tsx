@@ -57,20 +57,33 @@ function clamp(value: number, min: number, max: number): number {
   return Math.min(Math.max(value, min), max);
 }
 
-function buildRisingFloodIcons(seed: number, rows: number, colsPerRow: number, sizeBase: number, sizeRange: number): RisingFloodIcon[] {
+function buildRisingFloodIcons(
+  seed: number,
+  rows: number,
+  colsPerRow: number,
+  sizeBase: number,
+  sizeRange: number,
+  isMobile: boolean,
+  viewportWidth: number,
+): RisingFloodIcon[] {
   const rand = createSeededRandom(seed || Date.now());
   const symbols: RisingFloodIcon["icon"][] = ["❤", "✿", "★", "💗"];
   const result: RisingFloodIcon[] = [];
 
   for (let row = 0; row < rows; row += 1) {
     for (let col = 0; col < colsPerRow; col += 1) {
-      const baseLeft = ((col + 0.5) / colsPerRow) * 100;
-      const left = clamp(baseLeft + (rand() - 0.5) * 12, 2, 98);
+      const laneProgress = colsPerRow <= 1 ? 0.5 : col / (colsPerRow - 1);
       const driftX = (rand() - 0.5) * 280;
       const driftY = -1100 - rand() * 420;
       const duration = 1.9 + rand() * 0.85;
       const delay = row * 0.08 + col * 0.03 + rand() * 0.04;
       const size = sizeBase + rand() * sizeRange;
+      const safePaddingPercent = viewportWidth > 0 ? clamp(((size * 0.56 + 6) / viewportWidth) * 100, 8, 28) : isMobile ? 18 : 2;
+      const minLeft = isMobile ? safePaddingPercent : 2;
+      const maxLeft = isMobile ? 100 - safePaddingPercent : 98;
+      const laneLeft = minLeft + laneProgress * (maxLeft - minLeft);
+      const randomSpread = isMobile ? 4.5 : 12;
+      const left = clamp(laneLeft + (rand() - 0.5) * randomSpread, minLeft, maxLeft);
       const rotatePeak = driftX >= 0 ? 10 + rand() * 20 : -(10 + rand() * 20);
       const rotateEnd = rotatePeak * 0.65;
 
@@ -102,26 +115,32 @@ export default function HomePage() {
   const [burstOrigin, setBurstOrigin] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [burstSeed, setBurstSeed] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [viewportWidth, setViewportWidth] = useState(390);
   const [thanksMessage, setThanksMessage] = useState<{ id: number; text: string } | null>(null);
   const selectedDateKey = toDateKey(selectedDate);
 
   const isPast = selectedDateKey < today;
   const isToday = selectedDateKey === today;
-  const burstVectors = useMemo(() => (isMobile ? fullscreenBurstVectors.slice(0, 6) : fullscreenBurstVectors), [isMobile]);
+  const burstVectors = useMemo(() => (isMobile ? fullscreenBurstVectors.slice(0, 4) : fullscreenBurstVectors), [isMobile]);
   const floodBurstIcons = useMemo(
-    () => buildRisingFloodIcons(burstSeed, isMobile ? 2 : 3, isMobile ? 3 : 5, isMobile ? 84 : 72, isMobile ? 34 : 46),
-    [burstSeed, isMobile],
+    () => buildRisingFloodIcons(burstSeed, isMobile ? 2 : 3, isMobile ? 2 : 5, isMobile ? 84 : 72, isMobile ? 34 : 46, isMobile, viewportWidth),
+    [burstSeed, isMobile, viewportWidth],
   );
 
   useEffect(() => {
     const media = window.matchMedia("(max-width: 639px)");
-    const updateViewport = () => setIsMobile(media.matches);
+    const updateViewport = () => {
+      setIsMobile(media.matches);
+      setViewportWidth(window.innerWidth);
+    };
 
     updateViewport();
     media.addEventListener("change", updateViewport);
+    window.addEventListener("resize", updateViewport);
 
     return () => {
       media.removeEventListener("change", updateViewport);
+      window.removeEventListener("resize", updateViewport);
     };
   }, []);
 
