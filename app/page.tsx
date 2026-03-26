@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { AppShell } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
@@ -33,7 +33,7 @@ const fullscreenBurstVectors = [
 ];
 
 type RisingFloodIcon = {
-  icon: "❤" | "✿" | "❀" | "💗";
+  icon: "❤" | "✿" | "★" | "💗";
   left: number;
   bottom: number;
   driftX: number;
@@ -57,11 +57,9 @@ function clamp(value: number, min: number, max: number): number {
   return Math.min(Math.max(value, min), max);
 }
 
-function buildRisingFloodIcons(seed: number): RisingFloodIcon[] {
+function buildRisingFloodIcons(seed: number, rows: number, colsPerRow: number, sizeBase: number, sizeRange: number): RisingFloodIcon[] {
   const rand = createSeededRandom(seed || Date.now());
-  const rows = 3;
-  const colsPerRow = 5;
-  const symbols: RisingFloodIcon["icon"][] = ["❤", "✿", "❀", "💗"];
+  const symbols: RisingFloodIcon["icon"][] = ["❤", "✿", "★", "💗"];
   const result: RisingFloodIcon[] = [];
 
   for (let row = 0; row < rows; row += 1) {
@@ -72,7 +70,7 @@ function buildRisingFloodIcons(seed: number): RisingFloodIcon[] {
       const driftY = -1100 - rand() * 420;
       const duration = 1.15 + rand() * 0.55;
       const delay = row * 0.08 + col * 0.03 + rand() * 0.04;
-      const size = 72 + rand() * 46;
+      const size = sizeBase + rand() * sizeRange;
       const rotatePeak = driftX >= 0 ? 10 + rand() * 20 : -(10 + rand() * 20);
       const rotateEnd = rotatePeak * 0.65;
 
@@ -103,12 +101,29 @@ export default function HomePage() {
   const [burstTaskId, setBurstTaskId] = useState<string | null>(null);
   const [burstOrigin, setBurstOrigin] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [burstSeed, setBurstSeed] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
   const [thanksMessage, setThanksMessage] = useState<{ id: number; text: string } | null>(null);
   const selectedDateKey = toDateKey(selectedDate);
 
   const isPast = selectedDateKey < today;
   const isToday = selectedDateKey === today;
-  const floodBurstIcons = useMemo(() => buildRisingFloodIcons(burstSeed), [burstSeed]);
+  const burstVectors = useMemo(() => (isMobile ? fullscreenBurstVectors.slice(0, 6) : fullscreenBurstVectors), [isMobile]);
+  const floodBurstIcons = useMemo(
+    () => buildRisingFloodIcons(burstSeed, isMobile ? 3 : 3, isMobile ? 3 : 5, isMobile ? 84 : 72, isMobile ? 34 : 46),
+    [burstSeed, isMobile],
+  );
+
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 639px)");
+    const updateViewport = () => setIsMobile(media.matches);
+
+    updateViewport();
+    media.addEventListener("change", updateViewport);
+
+    return () => {
+      media.removeEventListener("change", updateViewport);
+    };
+  }, []);
 
   const tasksForDate = useMemo(() => {
     return board.tasksForDate(selectedDateKey);
@@ -303,7 +318,7 @@ export default function HomePage() {
               </motion.span>
             ))}
 
-            {fullscreenBurstVectors.map((vector, index) => (
+            {burstVectors.map((vector, index) => (
               <motion.span
                 key={`${vector.x}-${vector.y}-${index}`}
                 className="absolute text-pink-500"

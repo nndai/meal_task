@@ -5,11 +5,11 @@ import { motion } from "framer-motion";
 const particles = [
   { icon: "❤", left: "7%", size: 30, duration: 16, delay: 0 },
   { icon: "✿", left: "17%", size: 34, duration: 19, delay: 2 },
-  { icon: "❀", left: "28%", size: 38, duration: 15, delay: 1 },
+  { icon: "★", left: "28%", size: 42, duration: 15, delay: 1 },
   { icon: "❤", left: "40%", size: 32, duration: 18, delay: 3 },
   { icon: "✿", left: "56%", size: 36, duration: 20, delay: 0.5 },
   { icon: "❤", left: "68%", size: 30, duration: 14, delay: 2.5 },
-  { icon: "❀", left: "79%", size: 40, duration: 21, delay: 4 },
+  { icon: "★", left: "79%", size: 48, duration: 21, delay: 4 },
   { icon: "❤", left: "90%", size: 34, duration: 17, delay: 1.5 },
   { icon: "💗", left: "82%", size: 38, duration: 19, delay: 3.5 },
   { icon: "💖", left: "35%", size: 36, duration: 16, delay: 2.2 },
