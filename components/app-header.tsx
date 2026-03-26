@@ -15,7 +15,9 @@ export function AppHeader() {
     <header className="sticky top-0 z-30 border-b border-amber-100/80 bg-white/75 backdrop-blur-lg">
       <div className="mx-auto flex w-full max-w-5xl items-center justify-between px-5 sm:py-4 py-3">
         <div>
-          <p className="font-headline sm:text-3xl text-2xl font-extrabold tracking-tight text-amber-700 whitespace-nowrap">Meal Task</p>
+          <a href="/" className="font-headline sm:text-3xl text-2xl font-extrabold tracking-tight text-amber-700 whitespace-nowrap">
+            Meal Task
+          </a>
         </div>
         <nav className="flex items-center sm:gap-2 rounded-full bg-amber-50 p-1">
           {navItems.map((item) => {

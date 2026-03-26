@@ -31,6 +31,8 @@ export default function HomePage() {
   }, [board, selectedDateKey]);
 
   const dynamicTitle = isToday ? "Nhiệm vụ hôm nay" : `Nhiệm vụ ngày ${formatDateLabel(selectedDateKey)}`;
+  const participantCount = board.countParticipantsOnDate(selectedDateKey);
+
   return (
     <AppShell
       title={dynamicTitle}
@@ -45,10 +47,7 @@ export default function HomePage() {
           </Button>
           {showCalendar && (
             <>
-              <div
-                className="fixed inset-0 z-20"
-                onClick={() => setShowCalendar(false)}
-              />
+              <div className="fixed inset-0 z-20" onClick={() => setShowCalendar(false)} />
               <div className="fixed inset-45 z-30 flex items-start justify-center md:absolute md:inset-auto md:right-0 md:top-12 md:block">
                 <div className="rounded-xl border border-slate-200 bg-white p-2 shadow-xl">
                   <Calendar
@@ -71,9 +70,12 @@ export default function HomePage() {
     >
       {isPast && (
         <div className="mb-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-800">
-          Đây là ngày trong quá khứ, không thay đổi dữ liệu
+          Ngày trong quá khứ, không thay đổi dữ liệu!
         </div>
       )}
+      <div className="mb-4 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-700">
+        Số lượng: <span className="font-bold">{participantCount}</span>
+      </div>
       <div className="grid gap-5">
         {tasksForDate.map((task) => {
           const members = board.memberNames(task.id, selectedDateKey);

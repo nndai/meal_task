@@ -462,6 +462,12 @@ export function useHouseholdBoard() {
     return tasksForDate(date).filter((task) => task.completedBy.length > 0).length;
   }
 
+  function countParticipantsOnDate(date: string): number {
+    const memberIds = board.completions.filter((completion) => completion.date === date).map((completion) => completion.memberId);
+
+    return new Set(memberIds).size;
+  }
+
   return {
     hydrated,
     board,
@@ -480,6 +486,7 @@ export function useHouseholdBoard() {
     toggleTask,
     tasksForDate,
     countCompletedOnDate,
+    countParticipantsOnDate,
     memberNames,
   };
 }
