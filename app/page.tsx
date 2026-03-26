@@ -74,8 +74,8 @@ function buildRisingFloodIcons(
     for (let col = 0; col < colsPerRow; col += 1) {
       const laneProgress = colsPerRow <= 1 ? 0.5 : col / (colsPerRow - 1);
       const driftX = (rand() - 0.5) * 280;
-      const driftY = -1100 - rand() * 420;
-      const duration = 1.9 + rand() * 0.85;
+      const driftY = isMobile ? -1100 - rand() * 420 : -1550 - rand() * 520;
+      const duration = isMobile ? 2.6 + rand() * 1.1 : 4.1 + rand() * 1.8;
       const delay = row * 0.08 + col * 0.03 + rand() * 0.04;
       const size = sizeBase + rand() * sizeRange;
       const safePaddingPercent = viewportWidth > 0 ? clamp(((size * 0.56 + 6) / viewportWidth) * 100, 8, 28) : isMobile ? 18 : 2;
@@ -122,8 +122,9 @@ export default function HomePage() {
   const isPast = selectedDateKey < today;
   const isToday = selectedDateKey === today;
   const burstVectors = useMemo(() => (isMobile ? fullscreenBurstVectors.slice(0, 4) : fullscreenBurstVectors), [isMobile]);
+  const burstVectorDuration = isMobile ? 2.2 : 3.2;
   const floodBurstIcons = useMemo(
-    () => buildRisingFloodIcons(burstSeed, isMobile ? 2 : 3, isMobile ? 2 : 5, isMobile ? 84 : 72, isMobile ? 34 : 46, isMobile, viewportWidth),
+    () => buildRisingFloodIcons(burstSeed, isMobile ? 3 : 20, isMobile ? 2 : 4, isMobile ? 84 : 72, isMobile ? 34 : 46, isMobile, viewportWidth),
     [burstSeed, isMobile, viewportWidth],
   );
 
@@ -163,7 +164,7 @@ export default function HomePage() {
 
     window.setTimeout(() => {
       setBurstTaskId((current) => (current === taskId ? null : current));
-    }, 1700);
+    }, 3000);
   }
 
   function showThanksMessage(taskTitle: string) {
@@ -176,7 +177,7 @@ export default function HomePage() {
 
     window.setTimeout(() => {
       setThanksMessage((current) => (current?.id === id ? null : current));
-    }, 1800);
+    }, 2600);
   }
 
   return (
@@ -305,7 +306,7 @@ export default function HomePage() {
             initial={{ opacity: 0, y: 20, scale: 0.9 }}
             animate={{ opacity: 1, y: -4, scale: 1 }}
             exit={{ opacity: 0, y: -30, scale: 0.95 }}
-            transition={{ duration: 0.55, ease: "easeOut" }}
+            transition={{ duration: 0.85, ease: "easeOut" }}
           >
             <div className="max-w-2xl rounded-full border border-pink-200 bg-white/95 px-6 py-3 text-center text-sm font-semibold text-pink-700 shadow-lg shadow-pink-300/35 backdrop-blur-sm sm:text-base">
               {thanksMessage.text}
@@ -351,7 +352,7 @@ export default function HomePage() {
                   rotate: [0, 18, -14],
                 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 1.5, ease: "easeOut", delay: vector.delay }}
+                transition={{ duration: burstVectorDuration, ease: "easeOut", delay: vector.delay }}
               >
                 {index % 3 === 0 ? "❤" : index % 3 === 1 ? "✿" : "❀"}
               </motion.span>
