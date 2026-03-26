@@ -199,6 +199,7 @@ export default function HomePage() {
                 <div className="rounded-xl border border-pink-200 bg-white p-2 shadow-xl">
                   <Calendar
                     mode="single"
+                    className="rounded-md"
                     selected={selectedDate}
                     onSelect={(date) => {
                       if (!date) {
