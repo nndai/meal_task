@@ -40,7 +40,7 @@ export function AppShell({ title, subtitle, isReady, currentMember, isBusy = fal
       <LoveParticles />
       <AppHeader />
 
-      <main className="relative z-10 mx-auto w-full max-w-5xl px-5 pb-16 pt-4">
+      <main className="relative z-10 mx-auto w-full max-w-5xl px-5 pb-16 pt-24 sm:pt-28">
         {isReady && needsName ? (
           <section className="rounded-2xl border border-pink-200 bg-white/90 p-6 text-rose-700 shadow-sm">
             Đang chuyển đến trang chọn thành viên...

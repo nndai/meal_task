@@ -279,7 +279,7 @@ export default function HomePage() {
                   {members.map((member, index) => (
                     <span
                       key={member.id}
-                      className={`flex h-8 items-center justify-center rounded-full px-4 text-[14px] font-bold text-white ring-2 ring-white ${member.colorClass} ${index > 0 && members.length >= 3 ? "-ml-3" : ""}`}
+                      className={`flex h-8 items-center justify-center rounded-full px-4 text-[14px] font-bold text-white ring-2 ring-white ${member.colorClass} ${index > 0 && members.length >= 3 ? `-ml-${members.length}` : ""}`}
                       title={member.name}
                     >
                       {board.initials(member.name)}
@@ -354,7 +354,7 @@ export default function HomePage() {
                 exit={{ opacity: 0 }}
                 transition={{ duration: burstVectorDuration, ease: "easeOut", delay: vector.delay }}
               >
-                {index % 3 === 0 ? "❤" : index % 3 === 1 ? "✿" : "❀"}
+                {index % 3 === 0 ? "❤" : index % 3 === 1 ? "✿" : "★"}
               </motion.span>
             ))}
           </motion.div>

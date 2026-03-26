@@ -12,7 +12,7 @@ export function AppHeader() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-30 border-b border-pink-200/80 bg-white/75 backdrop-blur-lg">
+    <header className="fixed inset-x-0 top-0 z-40 border-b border-pink-200/80 bg-white/80 backdrop-blur-lg">
       <div className="mx-auto flex w-full max-w-5xl items-center justify-between px-5 sm:py-4 py-3">
         <div>
           <a href="/" className="font-headline sm:text-3xl text-2xl font-extrabold tracking-tight text-pink-700 whitespace-nowrap">

@@ -50,7 +50,7 @@ function WhoAreYouContent() {
       <LoveParticles />
       <AppHeader />
 
-      <main className="relative z-10 mx-auto w-full max-w-5xl px-5 py-10">
+      <main className="relative z-10 mx-auto w-full max-w-5xl px-5 pb-10 pt-24 sm:pt-28">
         <section className="mx-auto w-full max-w-lg overflow-hidden rounded-3xl border border-pink-200 bg-white shadow-2xl">
           <div className="bg-[linear-gradient(120deg,#ec4899_0%,#f43f5e_100%)] px-7 py-6 text-white">
             <h1 className="mt-1 font-headline text-3xl font-extrabold">Bạn là ai?</h1>
@@ -141,7 +141,7 @@ export default function WhoAreYouPage() {
           <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#ffd7e8_1px,transparent_1px),linear-gradient(to_bottom,#ffd7e8_1px,transparent_1px)] bg-size-[44px_44px] opacity-35" />
           <LoveParticles />
           <AppHeader />
-          <main className="relative z-10 mx-auto w-full max-w-5xl px-5 py-10">
+          <main className="relative z-10 mx-auto w-full max-w-5xl px-5 pb-10 pt-24 sm:pt-28">
             <section className="mx-auto w-full max-w-lg overflow-hidden rounded-3xl border border-pink-200 bg-white p-7 shadow-2xl">
               <p className="text-sm text-rose-700">Đang tải trang chọn thành viên...</p>
             </section>
