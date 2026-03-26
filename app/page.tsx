@@ -113,14 +113,14 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className={`flex items-center ${members.length >= 3 ? "gap-0" : "gap-2"}`}>
                   {members.length === 0 && (
                     <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600">Chưa có ai tick</span>
                   )}
-                  {members.map((member) => (
+                  {members.map((member, index) => (
                     <span
                       key={member.id}
-                      className={`flex h-8 items-center justify-center rounded-full px-4 text-[14px] font-bold text-white ring-2 ring-white ${member.colorClass}`}
+                      className={`flex h-8 items-center justify-center rounded-full px-4 text-[14px] font-bold text-white ring-2 ring-white ${member.colorClass} ${index > 0 && members.length >= 3 ? "-ml-3" : ""}`}
                       title={member.name}
                     >
                       {board.initials(member.name)}
