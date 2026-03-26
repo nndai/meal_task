@@ -109,7 +109,7 @@ export default function HomePage() {
   const isToday = selectedDateKey === today;
   const burstVectors = useMemo(() => (isMobile ? fullscreenBurstVectors.slice(0, 6) : fullscreenBurstVectors), [isMobile]);
   const floodBurstIcons = useMemo(
-    () => buildRisingFloodIcons(burstSeed, isMobile ? 3 : 3, isMobile ? 3 : 5, isMobile ? 84 : 72, isMobile ? 34 : 46),
+    () => buildRisingFloodIcons(burstSeed, isMobile ? 2 : 3, isMobile ? 3 : 5, isMobile ? 84 : 72, isMobile ? 34 : 46),
     [burstSeed, isMobile],
   );
 
