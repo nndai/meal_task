@@ -70,36 +70,36 @@ export default function ManagePage() {
       <div className="grid gap-6 md:grid-cols-12">
         <section className="space-y-4 overflow-hidden md:col-span-7">
           <div className="rounded-2xl border border-white/80 bg-white/90 p-6 shadow-sm">
-            <h3 className="font-headline text-xl font-bold text-slate-900">Thêm nhiệm vụ mới</h3>
+            <h3 className="font-headline text-xl font-bold text-rose-950">Thêm nhiệm vụ mới</h3>
             <form className="mt-4 flex gap-3" onSubmit={onAddTask}>
               <input
                 value={taskDraft}
                 onChange={(event) => setTaskDraft(event.target.value)}
                 placeholder="Ví dụ: Rửa bếp sau bữa tối"
-                className="h-11 flex-1 rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm outline-none focus:border-amber-500"
+                className="h-11 flex-1 rounded-xl border border-pink-200 bg-pink-50 px-4 text-sm outline-none focus:border-pink-500"
               />
-              <button type="submit" className="h-11 rounded-xl bg-amber-600 px-5 text-sm font-semibold text-white transition hover:bg-amber-700">
+              <button type="submit" className="h-11 rounded-xl bg-pink-600 px-5 text-sm font-semibold text-white transition hover:bg-pink-700">
                 Thêm
               </button>
             </form>
           </div>
 
           <div className="rounded-2xl border border-white/80 bg-white/90 p-6 shadow-sm">
-            <h3 className="font-headline text-xl font-bold text-slate-900">Danh sách nhiệm vụ</h3>
+            <h3 className="font-headline text-xl font-bold text-rose-950">Danh sách nhiệm vụ</h3>
             <ul className="mt-4 space-y-3">
               {board.board.taskTemplates.map((task) => (
-                <li key={task.id} className="flex min-w-0 items-center justify-between rounded-xl border border-slate-100 bg-slate-50 p-4">
+                <li key={task.id} className="flex min-w-0 items-center justify-between rounded-xl border border-pink-100 bg-pink-50 p-4">
                   {editingTaskId === task.id ? (
                     <div className="flex w-full min-w-0 items-center gap-2">
                       <input
                         value={editingTaskTitleDraft}
                         onChange={(event) => setEditingTaskTitleDraft(event.target.value)}
-                        className="h-9 min-w-0 flex-1 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-amber-500"
+                        className="h-9 min-w-0 flex-1 rounded-lg border border-pink-200 bg-white px-3 text-sm outline-none focus:border-pink-500"
                       />
                       <button
                         type="button"
                         onClick={saveEditTask}
-                        className="shrink-0 rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-emerald-700"
+                        className="shrink-0 rounded-lg bg-pink-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-pink-700"
                       >
                         Lưu
                       </button>
@@ -117,7 +117,7 @@ export default function ManagePage() {
                   ) : (
                     <>
                       <div>
-                        <p className="font-semibold text-slate-900">{task.title}</p>
+                        <p className="font-semibold text-rose-950">{task.title}</p>
                       </div>
                       <div className="flex items-center gap-2">
                         <button
@@ -157,16 +157,16 @@ export default function ManagePage() {
 
         <section className="space-y-4 overflow-hidden md:col-span-5">
           <div className="rounded-2xl border border-white/80 bg-white/90 p-6 shadow-sm">
-            <h3 className="font-headline text-xl font-bold text-slate-900">Bạn là ai</h3>
-            <p className="mt-1 text-sm text-slate-500">Hiển thị người dùng hiện tại và cho phép chọn lại.</p>
+            <h3 className="font-headline text-xl font-bold text-rose-950">Bạn là ai</h3>
+            <p className="mt-1 text-sm text-rose-500">Hiển thị người dùng hiện tại và cho phép chọn lại.</p>
 
-            <div className="mt-4 rounded-xl border border-amber-100 bg-amber-50 px-4 py-3">
-              <p className="text-xs font-semibold uppercase tracking-wider text-amber-700">Đang chọn</p>
+            <div className="mt-4 rounded-xl border border-pink-200 bg-pink-50 px-4 py-3">
+              <p className="text-xs font-semibold uppercase tracking-wider text-pink-700">Đang chọn</p>
               <div className="mt-1 flex items-center justify-between gap-3">
-                <p className="font-semibold text-slate-800">{board.currentMember ? board.currentMember.name : "Chưa chọn"}</p>
+                <p className="font-semibold text-rose-900">{board.currentMember ? board.currentMember.name : "Chưa chọn"}</p>
                 <Link
                   href="/who-are-you?returnTo=%2Fmanage&reselect=1"
-                  className="shrink-0 rounded-lg bg-amber-600 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-amber-700"
+                  className="shrink-0 rounded-lg bg-pink-600 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-pink-700"
                 >
                   Chọn lại
                 </Link>
@@ -175,17 +175,17 @@ export default function ManagePage() {
           </div>
 
           <div className="rounded-2xl border border-white/80 bg-white/90 p-6 shadow-sm">
-            <h3 className="font-headline text-xl font-bold text-slate-900">Thành viên hiện tại</h3>
-            <p className="mt-1 text-sm text-slate-500">Bạn có thể thêm thành viên mới và sửa tên trực tiếp trong danh sách.</p>
+            <h3 className="font-headline text-xl font-bold text-rose-950">Thành viên hiện tại</h3>
+            <p className="mt-1 text-sm text-rose-500">Bạn có thể thêm thành viên mới và sửa tên trực tiếp trong danh sách.</p>
 
             <form className="mt-4 flex gap-2" onSubmit={onAddMember}>
               <input
                 value={memberDraft}
                 onChange={(event) => setMemberDraft(event.target.value)}
                 placeholder="Ví dụ: Lan"
-                className="h-10 flex-1 rounded-xl border border-slate-200 bg-slate-50 px-3 text-sm outline-none focus:border-amber-500"
+                className="h-10 flex-1 rounded-xl border border-pink-200 bg-pink-50 px-3 text-sm outline-none focus:border-pink-500"
               />
-              <button type="submit" className="rounded-xl bg-amber-600 px-4 text-sm font-semibold text-white transition hover:bg-amber-700">
+              <button type="submit" className="rounded-xl bg-pink-600 px-4 text-sm font-semibold text-white transition hover:bg-pink-700">
                 Thêm
               </button>
             </form>
@@ -193,7 +193,9 @@ export default function ManagePage() {
             <ul className="mt-4 space-y-3">
               {sortedMembers.map((member) => (
                 <li key={member.id} className="flex min-w-0 items-center gap-3 rounded-xl bg-slate-50 p-3">
-                  <div className={`flex h-8 shrink-0 px-2 items-center justify-center rounded-full text-xs font-bold text-white ${member.colorClass}`}>
+                  <div
+                    className={`flex h-8 shrink-0 px-2 items-center justify-center rounded-full text-xs font-bold text-white ${member.colorClass}`}
+                  >
                     {board.initials(member.name)}
                   </div>
 
@@ -202,7 +204,7 @@ export default function ManagePage() {
                       <input
                         value={editingNameDraft}
                         onChange={(event) => setEditingNameDraft(event.target.value)}
-                        className="h-9 min-w-0 flex-1 rounded-lg border border-slate-200 bg-white px-3 text-sm outline-none focus:border-amber-500"
+                        className="h-9 min-w-0 flex-1 rounded-lg border border-pink-200 bg-white px-3 text-sm outline-none focus:border-pink-500"
                       />
                       <button
                         type="button"
