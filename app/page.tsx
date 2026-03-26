@@ -21,21 +21,15 @@ const fullscreenBurstVectors = [
   { x: -560, y: -380, delay: 0 },
   { x: -430, y: -280, delay: 0.02 },
   { x: -280, y: -420, delay: 0.04 },
-  { x: -640, y: -90, delay: 0.06 },
-  { x: -500, y: 150, delay: 0.08 },
-  { x: -360, y: 280, delay: 0.1 },
-  { x: -210, y: 430, delay: 0.12 },
+  { x: -480, y: -90, delay: 0.06 },
+  { x: -320, y: 220, delay: 0.1 },
   { x: 210, y: -450, delay: 0.03 },
   { x: 330, y: -330, delay: 0.05 },
-  { x: 460, y: -240, delay: 0.07 },
-  { x: 610, y: -120, delay: 0.09 },
-  { x: 520, y: 90, delay: 0.11 },
-  { x: 430, y: 260, delay: 0.13 },
-  { x: 300, y: 410, delay: 0.15 },
-  { x: 120, y: 500, delay: 0.17 },
-  { x: -90, y: 520, delay: 0.19 },
-  { x: 690, y: 210, delay: 0.14 },
-  { x: -700, y: 250, delay: 0.16 },
+  { x: 520, y: -120, delay: 0.09 },
+  { x: 420, y: 140, delay: 0.12 },
+  { x: 260, y: 320, delay: 0.15 },
+  { x: -120, y: 400, delay: 0.17 },
+  { x: 620, y: 220, delay: 0.14 },
 ];
 
 type RisingFloodIcon = {
@@ -65,8 +59,8 @@ function clamp(value: number, min: number, max: number): number {
 
 function buildRisingFloodIcons(seed: number): RisingFloodIcon[] {
   const rand = createSeededRandom(seed || Date.now());
-  const rows = 4;
-  const colsPerRow = 8;
+  const rows = 3;
+  const colsPerRow = 5;
   const symbols: RisingFloodIcon["icon"][] = ["❤", "✿", "❀", "💗"];
   const result: RisingFloodIcon[] = [];
 
@@ -109,6 +103,7 @@ export default function HomePage() {
   const [burstTaskId, setBurstTaskId] = useState<string | null>(null);
   const [burstOrigin, setBurstOrigin] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [burstSeed, setBurstSeed] = useState(0);
+  const [thanksMessage, setThanksMessage] = useState<{ id: number; text: string } | null>(null);
   const selectedDateKey = toDateKey(selectedDate);
 
   const isPast = selectedDateKey < today;
@@ -135,6 +130,19 @@ export default function HomePage() {
     window.setTimeout(() => {
       setBurstTaskId((current) => (current === taskId ? null : current));
     }, 1700);
+  }
+
+  function showThanksMessage(taskTitle: string) {
+    const id = Date.now();
+    const memberName = board.currentMember?.name ?? "bạn";
+    setThanksMessage({
+      id,
+      text: `Cảm ơn bạn ${memberName} đã chọn vào ${taskTitle} nhé`,
+    });
+
+    window.setTimeout(() => {
+      setThanksMessage((current) => (current?.id === id ? null : current));
+    }, 1800);
   }
 
   return (
@@ -202,6 +210,7 @@ export default function HomePage() {
                 const originY = rect.top + Math.min(56, rect.height * 0.5);
                 if (willCheck) {
                   triggerTaskCelebration(task.id, originX, originY);
+                  showThanksMessage(task.title);
                 }
 
                 void board.toggleTask(task.id, selectedDateKey);
@@ -253,6 +262,23 @@ export default function HomePage() {
           </article>
         )}
       </div>
+
+      <AnimatePresence>
+        {thanksMessage ? (
+          <motion.div
+            key={thanksMessage.id}
+            className="pointer-events-none fixed inset-x-0 top-24 z-60 flex justify-center px-4"
+            initial={{ opacity: 0, y: 20, scale: 0.9 }}
+            animate={{ opacity: 1, y: -4, scale: 1 }}
+            exit={{ opacity: 0, y: -30, scale: 0.95 }}
+            transition={{ duration: 0.55, ease: "easeOut" }}
+          >
+            <div className="max-w-2xl rounded-full border border-pink-200 bg-white/95 px-6 py-3 text-center text-sm font-semibold text-pink-700 shadow-lg shadow-pink-300/35 backdrop-blur-sm sm:text-base">
+              {thanksMessage.text}
+            </div>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
 
       <AnimatePresence>
         {burstTaskId ? (
