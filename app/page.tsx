@@ -74,7 +74,7 @@ export default function HomePage() {
         </div>
       )}
       <div className="mb-4 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-medium text-slate-700">
-        Số lượng: <span className="font-bold">{participantCount}</span>
+        Số lượng: <span className="font-bold">{participantCount}</span> người
       </div>
       <div className="grid gap-5">
         {tasksForDate.map((task) => {
