@@ -68,7 +68,7 @@ function buildRisingFloodIcons(seed: number, rows: number, colsPerRow: number, s
       const left = clamp(baseLeft + (rand() - 0.5) * 12, 2, 98);
       const driftX = (rand() - 0.5) * 280;
       const driftY = -1100 - rand() * 420;
-      const duration = 1.15 + rand() * 0.55;
+      const duration = 1.9 + rand() * 0.85;
       const delay = row * 0.08 + col * 0.03 + rand() * 0.04;
       const size = sizeBase + rand() * sizeRange;
       const rotatePeak = driftX >= 0 ? 10 + rand() * 20 : -(10 + rand() * 20);
@@ -302,7 +302,7 @@ export default function HomePage() {
               <motion.span
                 key={`rise-${index}-${item.left}-${item.delay}`}
                 className="absolute text-pink-500/80 drop-shadow-[0_8px_14px_rgba(236,72,153,0.35)]"
-                style={{ left: `${item.left}%`, bottom: item.bottom, fontSize: item.size }}
+                style={{ left: `${item.left}%`, marginLeft: `${item.size * -0.5}px`, bottom: item.bottom, fontSize: item.size }}
                 initial={{ opacity: 0, y: 0, x: 0, rotate: 0, scale: 0.5 }}
                 animate={{
                   opacity: [0, 0.95, 0],
@@ -332,7 +332,7 @@ export default function HomePage() {
                   rotate: [0, 18, -14],
                 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 1, ease: "easeOut", delay: vector.delay }}
+                transition={{ duration: 1.5, ease: "easeOut", delay: vector.delay }}
               >
                 {index % 3 === 0 ? "❤" : index % 3 === 1 ? "✿" : "❀"}
               </motion.span>
