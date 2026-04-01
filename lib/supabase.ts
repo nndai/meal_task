@@ -168,3 +168,28 @@ export async function removeCompletionInSupabase(taskId: string, memberId: numbe
     throw result.error;
   }
 }
+
+export async function savePushSubscriptionInSupabase(subscription: PushSubscription): Promise<void> {
+  const supabase = requireClient();
+  const subJson = subscription.toJSON();
+  
+  const result = await supabase.from("push_subscriptions").upsert({
+    endpoint: subJson.endpoint,
+    p256dh: subJson.keys?.p256dh,
+    auth: subJson.keys?.auth,
+    user_agent: window.navigator.userAgent
+  }, { onConflict: "endpoint" });
+
+  if (result.error) {
+    throw result.error;
+  }
+}
+
+export async function removePushSubscriptionFromSupabase(endpoint: string): Promise<void> {
+  const supabase = requireClient();
+  const result = await supabase.from("push_subscriptions").delete().eq("endpoint", endpoint);
+  
+  if (result.error) {
+    throw result.error;
+  }
+}

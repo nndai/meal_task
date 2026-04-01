@@ -426,6 +426,38 @@ export function useHouseholdBoard() {
           return;
         }
       }
+
+      // Notify others via Push API
+      const taskObj = board.taskTemplates.find(t => t.id === taskId);
+      const actionText = hasChecked ? "bỏ chọn" : "chọn";
+      const bodyText = taskObj 
+        ? `${member.name} vừa ${actionText} "${taskObj.title}"` 
+        : `${member.name} vừa ${actionText} một nhiệm vụ`;
+        
+      (async () => {
+        try {
+          let excludeEndpoint = "";
+          if ("serviceWorker" in navigator && "PushManager" in window) {
+            const reg = await navigator.serviceWorker.ready;
+            const sub = await reg.pushManager.getSubscription();
+            if (sub) {
+              excludeEndpoint = sub.endpoint;
+            }
+          }
+
+          await fetch("/api/push", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              title: "Meal Task",
+              body: bodyText,
+              excludeEndpoint,
+            })
+          });
+        } catch (e) {
+          console.error("Lỗi khi gửi thông báo:", e);
+        }
+      })();
     }
 
     setBoard((prev) => ({

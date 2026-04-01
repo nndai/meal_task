@@ -4,9 +4,13 @@ import { FormEvent, useMemo, useState } from "react";
 import Link from "next/link";
 import { AppShell } from "@/components/app-shell";
 import { useHouseholdBoard } from "@/hooks/useHouseholdBoard";
+import { useWebPush } from "@/hooks/useWebPush";
+import { BellRing, BellOff, Loader2 } from "lucide-react";
 
 export default function ManagePage() {
   const board = useHouseholdBoard();
+  const { isSupported, permission, subscription, isPending, subscribe, unsubscribe } = useWebPush();
+  
   const [taskDraft, setTaskDraft] = useState("");
   const [editingTaskId, setEditingTaskId] = useState<string | null>(null);
   const [editingTaskTitleDraft, setEditingTaskTitleDraft] = useState("");
@@ -171,6 +175,43 @@ export default function ManagePage() {
                   Chọn lại
                 </Link>
               </div>
+            </div>
+          </div>
+
+          <div className="rounded-2xl border border-white/80 bg-white/90 p-6 shadow-sm">
+            <h3 className="font-headline text-xl font-bold text-rose-950">Thông báo đẩy</h3>
+            <p className="mt-1 text-sm text-rose-500">Nhận thông báo khi có người chọn hoặc bỏ nhiệm vụ.</p>
+
+            <div className="mt-4 rounded-xl border border-pink-200 bg-pink-50 p-4">
+              {isSupported ? (
+                <div className="flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${subscription ? "bg-emerald-100 text-emerald-600" : "bg-slate-200 text-slate-500"}`}>
+                      {subscription ? <BellRing size={20} /> : <BellOff size={20} />}
+                    </div>
+                    <div>
+                      <p className="font-semibold text-rose-900">
+                        {subscription ? "Đang bật" : permission === "denied" ? "Đã bị chặn" : "Đang tắt"}
+                      </p>
+                      <p className="text-xs text-rose-600 mt-0.5">
+                        {subscription ? "Bạn sẽ nhận được thông báo" : permission === "denied" ? "Hãy mở khóa trong cài đặt trình duyệt" : "Bật để không bỏ lỡ cập nhật"}
+                      </p>
+                    </div>
+                  </div>
+                  {permission !== "denied" && (
+                    <button
+                      type="button"
+                      disabled={isPending}
+                      onClick={() => subscription ? unsubscribe() : subscribe()}
+                      className={`shrink-0 flex items-center justify-center min-w-[64px] rounded-lg px-4 py-2 text-xs font-bold text-white transition disabled:opacity-70 disabled:cursor-not-allowed ${subscription ? "bg-slate-500 hover:bg-slate-600" : "bg-pink-600 hover:bg-pink-700"}`}
+                    >
+                      {isPending ? <Loader2 className="animate-spin" size={14} /> : (subscription ? "Tắt" : "Bật")}
+                    </button>
+                  )}
+                </div>
+              ) : (
+                <p className="text-sm font-medium text-amber-700">Trình duyệt của bạn không hỗ trợ nhận thông báo đẩy.</p>
+              )}
             </div>
           </div>
 

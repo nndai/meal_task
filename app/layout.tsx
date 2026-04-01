@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { NotificationPrompt } from "@/components/notification-prompt";
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
 
@@ -17,7 +18,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="vi" className={cn("h-full antialiased", "font-sans", geist.variable)}>
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <NotificationPrompt />
+      </body>
     </html>
   );
 }
